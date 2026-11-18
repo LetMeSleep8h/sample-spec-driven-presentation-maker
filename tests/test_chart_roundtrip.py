@@ -56,6 +56,26 @@ TWO_SERIES = [
 ]
 
 
+@pytest.mark.parametrize("chart_type", ["bar", "line"])
+@pytest.mark.parametrize("value_axis", [{}, {"line": "none"}])
+def test_axis_shape_properties_follow_schema_order(tmp_path, chart_type, value_axis):
+    chart = _built_chart(
+        tmp_path, chartType=chart_type, categories=["A", "B"],
+        series=[{"name": "s", "values": [1, 2]}], valueAxis=value_axis,
+    )
+    for axis_tag in ("valAx", "catAx"):
+        axis = chart._chartSpace.find(f".//{_C}{axis_tag}")
+        children = [child.tag for child in axis]
+        if value_axis and axis_tag == "catAx":
+            continue  # Only the value axis is styled by this override.
+        assert children.count(f"{_C}spPr") == 1
+        shape_index = children.index(f"{_C}spPr")
+        assert children.index(f"{_C}tickLblPos") < shape_index
+        for successor in ("txPr", "crossAx"):
+            if f"{_C}{successor}" in children:
+                assert shape_index < children.index(f"{_C}{successor}")
+
+
 class TestChartTypes:
     @pytest.mark.parametrize("stacked,horizontal", [
         (False, False), (True, False), (False, True), (True, True),

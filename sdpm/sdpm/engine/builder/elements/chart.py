@@ -222,9 +222,7 @@ class ChartMixin:
                     ax_el = chart._chartSpace.find(f'.//{qn(ax_tag)}')
                     if ax_el is None:
                         continue
-                    ax_sp_pr = ax_el.find(qn('c:spPr'))
-                    if ax_sp_pr is None:
-                        ax_sp_pr = etree.SubElement(ax_el, qn('c:spPr'))
+                    ax_sp_pr = ax_el.get_or_add_spPr()
                     for old_ln in ax_sp_pr.findall(qn('a:ln')):
                         ax_sp_pr.remove(old_ln)
                     ln = etree.SubElement(ax_sp_pr, qn('a:ln'))
@@ -237,9 +235,7 @@ class ChartMixin:
                 if val_axis_def.get("line") == "none":
                     ax_el = chart._chartSpace.find(f'.//{qn("c:valAx")}')
                     if ax_el is not None:
-                        ax_sp_pr = ax_el.find(qn('c:spPr'))
-                        if ax_sp_pr is None:
-                            ax_sp_pr = etree.SubElement(ax_el, qn('c:spPr'))
+                        ax_sp_pr = ax_el.get_or_add_spPr()
                         for old_ln in ax_sp_pr.findall(qn('a:ln')):
                             ax_sp_pr.remove(old_ln)
                         ln = etree.SubElement(ax_sp_pr, qn('a:ln'))

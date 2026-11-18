@@ -13,6 +13,11 @@ Under an Upgrading section, the bullets after **Local installs (`sdpm update`).*
 
 ## [Unreleased]
 
+### Fixed
+
+- Insert chart axis shape properties in OOXML schema order for bar and line charts,
+  including hidden value-axis lines.
+
 ## [0.18.0] - 2026-11-15
 
 Japanese decks read more naturally: a `writing-ja` guide that the orchestrator and composers
